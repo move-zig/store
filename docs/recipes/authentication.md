@@ -40,8 +40,8 @@ export class AuthState {
   @Action(Login)
   login({ patchState }: StateContext<AuthStateModel>, { payload }: Login) {
     return this.authService.login(payload).pipe(tap((result: { token: string }) => {
-      patchState({ token, username: payload.username });
-    }))
+      patchState({ token: result.token, username: payload.username });
+    }));
   }
 
   @Action(Logout)
@@ -49,7 +49,7 @@ export class AuthState {
     const { token } = getState();
     return this.authService.logout(token).pipe(tap(() => {
       setState({});
-    });
+    }));
   }
 
 }
@@ -119,7 +119,7 @@ the login page.
 @Component({
   selector: 'app'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   constructor(private actions: Actions, private router: Router) {}
 
